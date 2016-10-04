@@ -96,5 +96,23 @@ module.exports = {
         }
     },
 
+    about: function(req, res) {
+        Static.findOne({ slug: 'about' }).exec(function(e, about){
+            return about === undefined ? res.json({ status: 'Fail', message: 'No data found!' }) : res.json({ status: 'Success', data: about.content });
+        });
+    },
+
+    terms: function(req, res) {
+        Static.findOne({ slug: 'terms' }).exec(function(e, terms){
+            return terms === undefined ? res.json({ status: 'Fail', message: 'No data found!' }) : res.json({ status: 'Success', data: terms.content });
+        });
+    },
+
+    privacy: function(req, res) {
+        Static.findOne({ slug: 'privacy' }).exec(function(e, privacy){
+            return privacy === undefined ? res.json({ status: 'Fail', message: 'No data found!' }) : res.json({ status: 'Success', data: privacy.content });
+        });
+    }
+
 };
 

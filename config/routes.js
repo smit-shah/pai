@@ -38,5 +38,8 @@ module.exports.routes = {
     //API
     'post /api/login': 'APIController.login',
     'post /api/forget': 'APIController.forget',
+    'get /api/about': 'APIController.about',
+    'get /api/terms': 'APIController.terms',
+    'get /api/privacy': 'APIController.privacy',
 
 };
