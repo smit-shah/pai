@@ -1,0 +1,79 @@
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h2>Add New User</h2>
+		<ol class="breadcrumb">
+			<li><a href="/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="/admin/users">Users</a></li>
+			<li class="active">New</li>
+		</ol>
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<div class="box">
+			<div class="box-body">
+				<form action="/admin/users/create" method="post" enctype="multipart/form-data">
+					<!-- Left section start -->
+					<div class="col-sm-7">
+						<div class="box-body">
+							<input class="form-control input-lg" type="text" name="first_name" placeholder="Enter First Name here" />
+						</div>
+						<div class="box-body">
+							<input class="form-control input-lg" type="text" name="last_name" placeholder="Enter Last Name here" />
+						</div>
+						<div class="box-body">
+							<input class="form-control input-lg" type="text" name="email" placeholder="Enter Email here" />
+						</div>
+						<div class="box-body">
+							<input class="form-control input-lg" type="password" id="password" name="password" placeholder="Enter Password here" /> <br />
+							<a href="javascript: void(0);" id="show" class="btn btn-primary">Show Password</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<a href="javascript: void(0);" id="generate" class="btn btn-primary">Generate Password</a>
+						</div>
+					</div>
+					<!-- Left section ends -->
+
+					<!-- Right section start -->
+					<div class="col-sm-5">
+						<div class="box box-primary">
+							<div class="box-header with-border"><h3 class="box-title">Featured Image</h3></div>
+							<div class="box-body"><input id="featured" type="file" name="featured" /></div>
+							<div id="preview" class="col-sm-12"></div>
+						</div>
+						<div class="col-sm-5">
+							<% for(var i=0; i < roles.length; i++) { %>
+
+						</div>
+						<div class="box-body">
+							<input type="submit" class="btn btn-success" value="Create" />
+						</div>
+					</div>
+					<!-- Right section end -->
+				</form>
+			</div>
+		</div>
+	</section>
+</div>
+<script>
+	function randomString(length, chars) {
+	    var result = '';
+	    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+	    return result;
+	}
+	
+	jQuery('#show').on('click', function(){
+		if (jQuery('#password').attr('type') == 'password') {
+			jQuery('#show').text('Hide Password');
+			jQuery('#password').attr('type', 'text');
+		}
+		else {
+			jQuery('#show').text('Show Password');
+			jQuery('#password').attr('type', 'password');
+		}
+	});
+
+	jQuery('#generate').on('click', function(){
+		jQuery('#password').val(randomString(15, '0123456789!@#$%^&*()abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'));
+	});
+
+</script>

@@ -1,0 +1,47 @@
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h2>All Pages <a class="leftSpace" href="/admin/pages/new"><i class="fa fa-plus"></i></a></h2>
+		<ol class="breadcrumb">
+			<li><a href="/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li class="active">Pages</li>
+		</ol>
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<div class="box">
+			<div class="box-body">
+				<table id="allPages" class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Title</th>
+							<th>Status</th>
+							<th>Date</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if (pages.length > 0) { %>
+							<% for(var i=0; i < pages.length; i++) { %>
+								<tr>
+									<td><%= pages[i].id %></td>
+									<td><a href="/admin/pages/<%= pages[i].id %>/edit"><%= pages[i].title %></a></td>
+									<td><%= pages[i].status %></td>
+									<td class="moment" datetime="<%= pages[i].createdAt %>"><%= pages[i].createdAt %></td>
+									<td>
+										<span class="action">
+											<a data-toggle="tooltip" title="Edit" href="/admin/pages/<%= pages[i].id %>/edit"><i class="fa fa-pencil"></i></a> | <a data-toggle="tooltip" title="Delete" href=""><i class="fa fa-trash"></i></a>
+										</span>
+									</td>
+								</tr>
+							<% } %>
+						<% } else { %>
+							<tr><td colspan="5" style="text-align: center;"> No pages found </td></tr>
+						<% } %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>

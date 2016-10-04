@@ -1,0 +1,5 @@
+<% if(!login){%>
+    <a href="/login" onclick="createCookie()" class="btn btn-info btn-large">Sign In</a>
+<% } else{ %>
+    <a href="/dashboard" class="btn btn-info btn-large">Dashboard</a>
+<%}%>
