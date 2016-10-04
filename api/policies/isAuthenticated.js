@@ -2,6 +2,9 @@ module.exports = function(req, res, next) {
   var url = req.url;
    if (req.session.user) {
       switch (url) {
+          case '/dashboard':
+            req.dash = 'active';
+            break;
           case '/admin/pages':
               req.page = 'active';
               req.allPage = 'active';
