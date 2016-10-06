@@ -12,6 +12,59 @@ var passport = require('passport'),
 
 module.exports = {
 	
+    newUser: function(req, res) {
+        if (req.method == 'POST') {
+            var userData = {
+                    platform: req.param('platform'),
+                    first_name: req.param('first_name'),
+                    last_name: req.param('last_name'),
+                    email: req.param('email'),
+                    password: req.param('password'),
+                    device_id: req.param('device_id'),
+                    gender: req.param('gender'),
+                    age: req.param('age'),
+                    status: 'active'
+                };
+            
+            if (userData.platform === undefined || userData.platform == '')
+                return res.json({ status: 'Fail', message: 'Platform can not be blank!' });
+
+            if (userData.first_name === undefined || userData.first_name == '')
+                return res.json({ status: 'Fail', message: 'First Name can not be blank!' });
+
+            if (userData.last_name === undefined || userData.last_name == '')
+                return res.json({ status: 'Fail', message: 'Last Name can not be blank!' });
+
+            if (userData.email === undefined || userData.email == '')
+                return res.json({ status: 'Fail', message: 'Email can not be blank!' });
+
+            if (userData.password === undefined || userData.password == '')
+                return res.json({ status: 'Fail', message: 'Password can not be blank!' });
+
+            if (userData.device_id === undefined || userData.device_id == '')
+                return res.json({ status: 'Fail', message: 'Device Id can not be blank!' });
+
+            User.create(userData).exec(function(err, user){
+                if (err) {
+                    var msg = '';
+
+                    if (err.invalidAttributes.email)
+                        msg = 'Email is already taken!';
+                    
+                    if (err.invalidAttributes.password) {
+                        msg = (err.invalidAttributes.password[0].rule == 'minLength') ? 'Password must be of 4 characters' : 'Password can not be longer than 10 digits';
+                    }
+
+                    return res.json({ status: 'Fail', message: msg, err: err });
+                }
+                return res.json({ status: 'Success', message: 'User created successfully!', data: user });
+            });
+
+        }
+        else
+            return res.json({ status: 'Fail', message: 'You must have to use POST method' });
+    },
+
 	login: function(req, res) {
 		if (req.method == 'POST') {
 			var platform = req.param('platform'),

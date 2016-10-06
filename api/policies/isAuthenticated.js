@@ -13,14 +13,6 @@ module.exports = function(req, res, next) {
               req.page = 'active';
               req.newPage = 'active';
               break;
-          case '/admin/media':
-              req.media = 'active';
-              req.allMedia = 'active';
-              break;
-          case '/admin/media/new':
-              req.media = 'active';
-              req.newMedia = 'active';
-              break;
           case '/admin/users':
               req.users = 'active';
               req.allUsers = 'active';

@@ -27,15 +27,11 @@ module.exports.routes = {
     'post /admin/pages/:id/update': 'PageController.update',
     'post /admin/page/checkSlug': 'PageController.checkSlug',
 
-    //Media
-    'get /admin/media': 'MediaController.all',
-    'get /admin/media/new': 'MediaController.new',
-    'post /admin/media/upload': 'MediaController.upload',
-
     //For page
     'get /:name': 'PageController.view',
 
     //API
+    'post /api/user/new': 'APIController.newUser',
     'post /api/login': 'APIController.login',
     'post /api/forget': 'APIController.forget',
     'get /api/about': 'APIController.about',
