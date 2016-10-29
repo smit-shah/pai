@@ -11,13 +11,12 @@
     }
 
     $user = get_user_by('login', $username);
-    $isActive = get_user_meta($user->ID,'status',true);
-
+    
     if ($user == null) {
         $status  =   'fail';
         $message =   "Username or Password is incorrect";
     }
-    else if(!$isActive) {
+    else if(!$user->data->user_status) {
         $status = "fail";
         $message = "Your account has been blocked, please contact admin.";
     }

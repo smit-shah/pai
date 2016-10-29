@@ -479,6 +479,53 @@ function be_gravatar_filter($avatar, $id_or_email, $size, $default, $alt) {
 }
 add_filter('get_avatar', 'be_gravatar_filter', 10, 5);
 
+function status_box($post) {
+	$task_status = get_post_meta($post->ID, 'task_status', true);
+?>
+	<ul>
+		<li>
+			<select name="task_status">
+				<option value="Pending" <?php echo $task_status == 'Pending' ? 'selected' : '' ?>>Pending</option>
+				<option value="Assigned" <?php echo $task_status == 'Assigned' ? 'selected' : '' ?>>Assigned</option>
+				<option value="Completed" <?php echo $task_status == 'Completed' ? 'selected' : '' ?>>Completed</option>
+				<option value="Canceled" <?php echo $task_status == 'Canceled' ? 'selected' : '' ?>>Canceled</option>
+			</select>
+		</li>
+	</ul>
+<?php
+}
+
+function assigned_box($post) {
+	$assignee = get_post_meta($post->ID, 'working_user', true);
+	$allUsers = get_users(array('role' => 'Subscriber'), ARRAY_A);
+	if (count($allUsers) > 0) {
+		echo '<select name="working_user">';
+		foreach ($allUsers as $key => $user) {
+			$user_meta = get_user_meta($user->ID);
+			$sel = '';
+			if ($user->ID == $assignee)
+				$sel = 'selected';
+			echo '<option value="'.$user->ID.'" '.$sel.'>'.$user_meta['first_name'][0].' '.$user_meta['last_name'][0].' ('.$user_meta['nickname'][0].')</option>';
+		}
+		echo '</select>';
+	}
+}
+
+function custom_meta_boxes( $post ) {
+    add_meta_box('task-meta-status', __('Task Status'), 'status_box', 'post', 'side', 'default');
+    add_meta_box('task-meta-assigned', __('Task Assigned To'), 'assigned_box', 'post', 'side', 'default');
+}
+add_action( 'add_meta_boxes_post', 'custom_meta_boxes' );
+
+function save_post_meta($post_id) {
+    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) 
+        return;
+    update_post_meta($post_id, 'working_user', $_POST['working_user']);
+   	update_post_meta($post_id, 'task_status', $_POST['task_status']);
+}
+
+add_action('save_post', 'save_post_meta');
+
 function pr($obj) {
 	echo '<pre>Data';
 	print_r($obj);

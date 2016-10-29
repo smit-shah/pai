@@ -1,5 +1,6 @@
 <?php
     require_once 'config.php';
+    require_once '../wp-admin/includes/ms.php';
 
     global $wpdb;
 
@@ -21,9 +22,8 @@
     }
 
     $user = get_user_by_email($email);
-    $isActive  =   get_user_meta($user->ID,'status',true);
-
-    if($user && !$isActive) {
+    
+    if($user && !$user->data->user_status) {
         echo json_encode(array('data' => "", 'status'=>'fail','message'=>'Your account has been blocked, please contact admin.'));
         die();
     }
@@ -89,6 +89,7 @@
             }
             $user                               =   get_user_by('login', $username);
             $userdata                           =   $user->data;
+            update_user_status( $userdata->ID, 'user_status', 1 );
             $result_array['user_id']            =   $userdata->ID;
             $result_array['first_name']          =   get_user_meta($userdata->ID,'first_name',true);
             $result_array['user_email']         =   $userdata->user_email;

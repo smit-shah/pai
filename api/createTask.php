@@ -1,6 +1,22 @@
 <?php
     require_once 'config.php';
 
+    if (!isset($_REQUEST['user_id']) || $_REQUEST['user_id'] == '') {
+        echo json_encode(array('status' => 'fail', 'message' => 'User id can not be blank!', 'data' => array()));
+        die();
+    }
+
+    if (!isset($_REQUEST['title']) || $_REQUEST['title'] == '') {
+        echo json_encode(array('status' => 'fail', 'message' => 'Task title can not be blank!', 'data' => array()));
+        die();
+    }
+
+    if (!isset($_REQUEST['price']) || $_REQUEST['price'] == '') {
+        echo json_encode(array('status' => 'fail', 'message' => 'Task price can not be blank!', 'data' => array()));
+        die();
+    }
+
+
     $upload_dir         =   wp_upload_dir();
     $imagepath          =   $upload_dir['path'] . '/';
     $httpimagepath      =   $upload_dir['url'] . '/';
@@ -47,6 +63,9 @@
         add_post_meta($lastInsertId, "emergency", $_REQUEST['emergency']);
         add_post_meta($lastInsertId, "emergency_price", $_REQUEST['emergency_price']);
         add_post_meta($lastInsertId, "display_name", $_REQUEST['display_name']);
+        add_post_meta($lastInsertId, "lat", $_REQUEST['lat']);
+        add_post_meta($lastInsertId, "lon", $_REQUEST['lon']);
+        add_post_meta($lastInsertId, "task_status", 'Pending');
 
         $result_return  =   array('data' => '','status'=>'success','message'=>"Task created successfully");
         echo json_encode($result_return);

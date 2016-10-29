@@ -1,5 +1,6 @@
 <?php
     require_once 'config.php';
+    require_once '../wp-admin/includes/ms.php';
 
     $first_name  =   sanitize_text_field($_REQUEST['first_name']);
     $last_name =   sanitize_text_field($_REQUEST['last_name']);
@@ -25,7 +26,7 @@
         $user = array(
             'user_login'    =>  $email,
             'user_pass'     =>  $password,
-            'user_email'    =>  $email,
+            'user_email'    =>  $email
         );
         $user_id            =   wp_insert_user($user);
         if ($user_id->errors) {
@@ -49,6 +50,7 @@
 	                    </body>
 	                    </html>';
         	mail($email, "Welcome to Pairi", $message, $headers);*/
+            update_user_status( $user_id, 'user_status', 1 );
             $user_info                      =   get_userdata($user_id);
             $user_info                      =   $user_info->data;
             $result_array['user_id']        =   $user_id;
@@ -63,22 +65,21 @@
                 $imagepath          =   $upload_dir['path'] . '/';
                 $httpimagepath      =   $upload_dir['url'] . '/';
                 move_uploaded_file($tmp_name, $imagepath . $image_name);
-                update_user_meta($user_id, 'profile_img', $httpimagepath . $image_name);
+                add_user_meta($user_id, 'profile_img', $httpimagepath . $image_name);
                 $result_array['profile_image'] = $httpimagepath . $image_name;
             }
             else {
                 $result_array['profile_image'] = "";
             }
-            update_user_meta($user_id, 'device_id', $device_id);
-            update_user_meta($user_id, 'platform', $platform);
-            update_user_meta($user_id, 'first_name', $first_name);
-            update_user_meta($user_id, 'last_name', $last_name);
-            update_user_meta($user_id, 'user_password', $password);
-            update_user_meta($user_id, 'gender', $gender);
-            update_user_meta($user_id, 'age', $age);
-            update_user_meta($user_id, 'status', 1);
-            update_user_meta($userdata->ID, 'lat', $_REQUEST['lat']);
-            update_user_meta($userdata->ID, 'lon', $_REQUEST['lon']);
+            add_user_meta($user_id, 'device_id', $device_id);
+            add_user_meta($user_id, 'platform', $platform);
+            add_user_meta($user_id, 'first_name', $first_name);
+            add_user_meta($user_id, 'last_name', $last_name);
+            add_user_meta($user_id, 'user_password', $password);
+            add_user_meta($user_id, 'gender', $gender);
+            add_user_meta($user_id, 'age', $age);
+            add_user_meta($userdata->ID, 'lat', $_REQUEST['lat']);
+            add_user_meta($userdata->ID, 'lon', $_REQUEST['lon']);
             
             $message                    =   'New user created successfully';
             $result_return                  =   array('data' => $result_array,'status'=>'success','message'=>$message);
